@@ -9,3 +9,9 @@ CREATE TABLE students (
     email VARCHAR(255) NOT NULL UNIQUE,
     registration_date TIMESTAMP DEFAULT NOW()
 )
+
+CREATE TABLE memberships (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    price FLOAT
+)
