@@ -13,17 +13,24 @@ CREATE TABLE students (
 CREATE TABLE memberships (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    price FLOAT CHECK (price >= 0)
+    price DECIMAL(6,2) CHECK (price >= 0)
 );
 
 CREATE TABLE enrollments (
     id SERIAL PRIMARY KEY,
     id_student INT NOT NULL,
-    id_membership INT NOT NULL,
+    id_membership INT,
     start_date DATE DEFAULT CURRENT_DATE,
     end_date DATE,
     status VARCHAR(50),
     FOREIGN KEY (id_student) REFERENCES students(id),
-    FOREIGN KEY (id_membership) REFERENCES memberships(id),
+    FOREIGN KEY (id_membership) REFERENCES memberships(id) ON DELETE SET NULL,
     CHECK (end_date IS NULL OR end_date >= start_date)
+);
+
+CREATE TABLE workouts (
+    id SERIAL PRIMARY KEY,
+    id_student INT NOT NULL,
+    workout_description TEXT NOT NULL,
+    FOREIGN KEY (id_student) REFERENCES students(id) ON DELETE CASCADE
 );
