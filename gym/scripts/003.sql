@@ -1,3 +1,5 @@
+-- Warmups scrips, basic querys for example --
+
 -- Select all names and emails from the students table. --
 SELECT name, email FROM students;
 
