@@ -57,3 +57,25 @@ SELECT
 FROM students s
 LEFT JOIN enrollments e ON s.id = e.id_student
 WHERE (status != 'cancelled' OR status IS NULL);
+
+-- List students who cancelled their enrollment (status 'cancelled') and which plan they had. --
+SELECT
+    s.name AS student,
+    m.name AS plan
+FROM students s
+LEFT JOIN enrollments e ON e.id_student = s.id
+LEFT JOIN memberships m ON e.id_membership = m.id
+WHERE e.status = 'cancelled';
+
+-- Show the student's name and the number of days passed since their registration date until today. --
+SELECT
+    s.name AS student,
+    CURRENT_DATE - s.registration_date::date AS days_passed
+FROM students s;
+
+-- List students who have 'Cardio' in their workout descriptions. --
+SELECT
+    s.name AS student
+FROM students s
+LEFT JOIN workouts w ON s.id = w.id_student
+WHERE w.workout_description ILIKE '%cardio%';
