@@ -37,3 +37,36 @@ SELECT
 FROM memberships m
 LEFT JOIN enrollments e ON m.id = e.id_membership
 GROUP BY m.name;
+
+-- List students who have more than 2 workouts registered. --
+SELECT
+    s.name AS student
+FROM students s
+LEFT JOIN workouts w ON s.id = w.id_student
+GROUP BY s.id
+HAVING COUNT(*) > 2
+ORDER BY s.id;
+
+-- Find the price of the most expensive plan among students with 'active' status. --
+SELECT
+    MAX(m.price) AS max_price
+FROM memberships m
+INNER JOIN enrollments e ON m.id = e.id_membership
+WHERE e.status = 'active';
+
+-- Count how many workouts each student has (display name and count). --
+SELECT
+    s.name AS student,
+    COUNT(*) AS workouts
+FROM students s
+INNER JOIN workouts w ON w.id_student = s.id
+GROUP BY s.name, s.id
+ORDER BY s.id;
+
+-- Show only the membership plans that have more than 2 students enrolled. --
+SELECT
+    m.name AS plan_name
+FROM memberships m
+LEFT JOIN enrollments e ON m.id = e.id_membership
+GROUP BY e.id_membership, m.name
+HAVING COUNT(id_student) >= 2;
