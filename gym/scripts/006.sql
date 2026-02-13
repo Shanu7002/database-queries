@@ -55,8 +55,24 @@ SELECT
 FROM students s;
 
 -- Find students who are on the same plan as 'Eduardo Müller' (without using his ID directly). --
+SELECT s.name AS student
+FROM students s
+JOIN enrollments e ON s.id = e.id_student
+WHERE e.id_membership = (
+    SELECT id_membership
+    FROM enrollments e2
+    JOIN students s2 ON e2.id_student = s2.id
+    WHERE s2.name = 'Eduardo Müller' 
+) AND s.name != 'Eduardo Müller';
 
 -- List students and their plan names, but only for those whose plan costs more than 100. --
+SELECT 
+    s.name AS student,
+    m.price
+FROM students s
+JOIN enrollments e ON s.id = e.id_student
+JOIN memberships m ON m.id = e.id_membership
+WHERE m.price >= '100';
 
 -- Show the total count of active students using a subquery in the SELECT clause. --
 
