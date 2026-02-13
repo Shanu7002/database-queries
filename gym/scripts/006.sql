@@ -75,5 +75,16 @@ JOIN memberships m ON m.id = e.id_membership
 WHERE m.price >= '100';
 
 -- Show the total count of active students using a subquery in the SELECT clause. --
+SELECT
+    name AS student,
+    (SELECT COUNT(*) AS quantity FROM enrollments WHERE status = 'active'
+) AS total_active_students
+FROM students;
 
 -- List the IDs of students who have 'Strength' or 'Power' in their workout descriptions. --
+SELECT
+    DISTINCT s.id
+FROM students s
+JOIN workouts w ON s.id = w.id_student
+WHERE w.workout_description ILIKE '%strength%' OR
+      w.workout_description ILIKE '%power%';
