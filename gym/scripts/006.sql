@@ -20,3 +20,44 @@ SELECT
     name AS student,
     (SELECT ROUND(AVG(m.price), 2) FROM memberships m) AS global_avg
 FROM students;
+
+-- Find the student with the highest number of workouts using a subquery in the FROM clause. --
+SELECT
+    s.name AS student
+FROM students s
+INNER JOIN (
+    SELECT 
+        id_student,
+        COUNT(*) AS count
+    FROM workouts
+    GROUP BY id_student
+) AS temp_table ON s.id = temp_table.id_student
+ORDER BY temp_table.count DESC LIMIT 1;
+
+-- List membership plans that have never been chosen by any student. --
+SELECT name AS plan
+FROM memberships
+ WHERE id NOT IN (
+    SELECT DISTINCT id_membership
+    FROM enrollments
+    WHERE id_membership IS NOT NULL
+);
+
+-- Create a report with the student's name and the total amount they have "paid" (assuming they paid for their plan once). --
+SELECT
+    s.name AS student,
+    (SELECT COALESCE(m.price, 0) 
+    FROM enrollments e
+    JOIN memberships m ON m.id = e.id_membership
+    WHERE e.id_student = s.id
+    LIMIT 1
+    ) AS amount_paid
+FROM students s;
+
+-- Find students who are on the same plan as 'Eduardo Müller' (without using his ID directly). --
+
+-- List students and their plan names, but only for those whose plan costs more than 100. --
+
+-- Show the total count of active students using a subquery in the SELECT clause. --
+
+-- List the IDs of students who have 'Strength' or 'Power' in their workout descriptions. --
