@@ -1,0 +1,7 @@
+SELECT DISTINCT c.first_name
+FROM customer c
+WHERE EXISTS (
+    SELECT 1
+    FROM payment p
+    WHERE p.customer_id = c.customer_id
+);
